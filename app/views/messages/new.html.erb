@@ -1,0 +1,32 @@
+<h1>New Message</h1>
+
+<%= form_with model: @message do |f| %>
+  <% if @message.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@message.errors.count, "error") %> prohibited this message from being saved:</h4>
+      <ul>
+        <% @message.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :chat_id %>
+    <%= f.select :chat_id, Chat.all.collect { |c| ["Chat #{c.id} (between #{c.sender.email} and #{c.receiver.email})", c.id] }, {}, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :user_id, "Author" %>
+    <%= f.select :user_id, User.all.collect { |u| [u.email, u.id] }, {}, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :body %>
+    <%= f.text_area :body, class: 'form-control' %>
+  </div>
+
+  <%= f.submit 'Send Message', class: 'btn btn-primary' %>
+  <%= link_to 'Cancel', messages_path, class: 'btn btn-secondary' %>
+<% end %>

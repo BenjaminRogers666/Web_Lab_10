@@ -1,22 +1,6 @@
 <h1>Detalles del Chat</h1>
 <p><strong>ID:</strong> <%= @chat.id %></p>
-<p><strong>Remitente:</strong> <%= @chat.sender.email %></p>
-<p><strong>Receptor:</strong> <%= @chat.receiver.email %></p>
-<p><strong>Fecha creación:</strong> <%= @chat.created_at %></p>
-
-<h3 class="mt-4">Mensajes en este chat:</h3>
-<% if @chat.messages.any? %>
-  <ul>
-    <% @chat.messages.each do |message| %>
-      <li>
-        <strong><%= message.user.email %>:</strong> 
-        <%= message.body %>
-        <small>(<%= message.created_at %>)</small>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>No hay mensajes en este chat.</p>
-<% end %>
-
-<%= link_to 'Volver', chats_path, class: 'btn btn-secondary mt-3' %>
+<p><strong>Remitente:</strong> <%= @chat.sender.email %> (<%= @chat.sender.first_name %> <%= @chat.sender.last_name %>)</p>
+<p><strong>Receptor:</strong> <%= @chat.receiver.email %> (<%= @chat.receiver.first_name %> <%= @chat.receiver.last_name %>)</p>
+<p><strong>Cantidad de mensajes:</strong> <%= @chat.messages.count %></p>
+<%= link_to 'Volver', chats_path, class: 'btn btn-secondary' %>

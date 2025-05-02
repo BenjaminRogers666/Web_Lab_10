@@ -1,22 +1,17 @@
 class UsersController < ApplicationController
-  # GET /users
   def index
-    @users = User.all.includes(:chats_as_sender, :chats_as_receiver, :messages)
-    @users = @users.order(created_at: :desc) # Ordenar por fecha de creación
+    @users = User.all.order(created_at: :desc) # Elimina los includes innecesarios para la vista index
   end
 
-  # GET /users/:id
   def show
-    @user = User.includes(:chats_as_sender, :chats_as_receiver, :messages).find(params[:id])
-    @chats = @user.chats_as_sender.or(@user.chats_as_receiver).distinct
+    @user = User.find(params[:id])
+    @chats = @user.all_chats # Usamos el método que definimos en el modelo
   end
 
-  # GET /users/new
   def new
     @user = User.new
   end
 
-  # POST /users
   def create
     @user = User.new(user_params)
     if @user.save
@@ -28,7 +23,6 @@ class UsersController < ApplicationController
 
   private
 
-  # Filtro de parámetros fuertes
   def user_params
     params.require(:user).permit(:email, :first_name, :last_name)
   end

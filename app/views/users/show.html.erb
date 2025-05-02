@@ -1,21 +1,21 @@
-<div class="card">
-  <div class="card-header bg-primary text-white">
-    <h2 class="mb-0">Detalles del Usuario</h2>
-  </div>
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-6">
-        <p><strong>Email:</strong> <%= @user.email %></p>
-        <p><strong>Nombre:</strong> <%= @user.first_name %></p>
-        <p><strong>Apellido:</strong> <%= @user.last_name %></p>
-      </div>
-      <div class="col-md-6">
-        <p><strong>Registrado el:</strong> <%= @user.created_at.to_formatted_s(:long) %></p>
-        <p><strong>Última actualización:</strong> <%= @user.updated_at.to_formatted_s(:long) %></p>
-      </div>
-    </div>
-  </div>
-  <div class="card-footer">
-    <%= link_to 'Volver a Usuarios', users_path, class: 'btn btn-secondary' %>
-  </div>
-</div>
+<h1>Detalles del Usuario</h1>
+
+<p><strong>Email:</strong> <%= @user.email %></p>
+<p><strong>Nombre:</strong> <%= @user.first_name %></p>
+<p><strong>Apellido:</strong> <%= @user.last_name %></p>
+
+<h3>Chats del Usuario</h3>
+<% if @chats.any? %>
+  <ul>
+    <% @chats.each do |chat| %>
+      <li>
+        Chat con <%= chat.sender_id == @user.id ? chat.receiver.email : chat.sender.email %>
+        <%= link_to 'Ver chat', chat_path(chat) %>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p>El usuario no tiene chats.</p>
+<% end %>
+
+<%= link_to 'Volver', users_path, class: 'btn btn-secondary' %>

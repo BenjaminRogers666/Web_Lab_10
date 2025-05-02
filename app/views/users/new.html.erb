@@ -1,0 +1,32 @@
+<h1>New User</h1>
+
+<%= form_with model: @user do |f| %>
+  <% if @user.errors.any? %>
+    <div class="alert alert-danger">
+      <h4><%= pluralize(@user.errors.count, "error") %> prohibited this user from being saved:</h4>
+      <ul>
+        <% @user.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-group">
+    <%= f.label :first_name %>
+    <%= f.text_field :first_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :last_name %>
+    <%= f.text_field :last_name, class: 'form-control' %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :email %>
+    <%= f.email_field :email, class: 'form-control' %>
+  </div>
+
+  <%= f.submit 'Create User', class: 'btn btn-primary' %>
+  <%= link_to 'Cancel', users_path, class: 'btn btn-secondary' %>
+<% end %>
