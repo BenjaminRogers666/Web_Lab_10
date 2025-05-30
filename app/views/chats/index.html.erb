@@ -19,6 +19,7 @@
           <td><%= chat.messages.count %></td>
           <td>
             <%= link_to 'Ver', chat_path(chat), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Editar', edit_chat_path(chat), class: 'btn btn-secondary btn-sm' %>
           </td>
         </tr>
       <% end %>
@@ -26,11 +27,11 @@
       <tr>
         <td colspan="5" class="text-center text-muted py-4">
           No hay chats disponibles
-          <%= link_to 'Iniciar nuevo chat', new_chat_path, class: 'btn btn-link' if controller.action_methods.include?('new') %>
+          <%= link_to 'Iniciar nuevo chat', new_chat_path, class: 'btn btn-link' %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to 'Start new chat', new_chat_path, class: 'btn btn-success mb-3' %>
+<%= link_to 'Nuevo Chat', new_chat_path, class: 'btn btn-success mb-3' %>

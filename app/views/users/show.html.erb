@@ -1,21 +1,27 @@
 <h1>Detalles del Usuario</h1>
 
 <p><strong>Email:</strong> <%= @user.email %></p>
-<p><strong>Nombre:</strong> <%= @user.first_name %></p>
-<p><strong>Apellido:</strong> <%= @user.last_name %></p>
+<p><strong>Nombre:</strong> <%= @user.first_name %> <%= @user.last_name %></p>
 
-<h3>Chats del Usuario</h3>
-<% if @chats.any? %>
-  <ul>
-    <% @chats.each do |chat| %>
-      <li>
-        Chat con <%= chat.sender_id == @user.id ? chat.receiver.email : chat.sender.email %>
-        <%= link_to 'Ver chat', chat_path(chat) %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <p>El usuario no tiene chats.</p>
-<% end %>
+<h3>Chats Participantes</h3>
+<ul>
+  <% @user.all_chats.each do |chat| %>
+    <li>
+      Chat con <%= chat.sender == @user ? chat.receiver.email : chat.sender.email %>
+      (<%= link_to 'Ver', chat %>)
+    </li>
+  <% end %>
+</ul>
 
-<%= link_to 'Volver', users_path, class: 'btn btn-secondary' %>
+<h3>Mensajes Enviados</h3>
+<ul>
+  <% @user.messages.each do |message| %>
+    <li>
+      "<%= message.body %>" en Chat <%= message.chat.id %>
+      (<%= link_to 'Ver', message %>)
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to 'Editar', edit_user_path(@user) %> |
+<%= link_to 'Volver', users_path %>

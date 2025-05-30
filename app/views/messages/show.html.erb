@@ -5,3 +5,12 @@
 <p><strong>Mensaje:</strong> <%= @message.body %></p>
 <p><strong>Fecha:</strong> <%= @message.created_at %></p>
 <%= link_to 'Volver', messages_path, class: 'btn btn-secondary' %>
+
+<h1>Detalles del Mensaje</h1>
+
+<p><strong>Chat:</strong> <%= @message.chat.id %></p>
+<p><strong>Usuario:</strong> <%= @message.user.email %></p>
+<p><strong>Mensaje:</strong> <%= @message.body %></p>
+
+<%= link_to 'Editar', edit_message_path(@message) %> |
+<%= link_to 'Volver', messages_path %>

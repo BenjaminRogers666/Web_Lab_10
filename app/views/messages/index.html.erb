@@ -21,6 +21,7 @@
           <td><%= message.created_at.to_formatted_s(:short) %></td>
           <td>
             <%= link_to 'Ver', message_path(message), class: 'btn btn-primary btn-sm' %>
+            <%= link_to 'Editar', edit_message_path(message), class: 'btn btn-secondary btn-sm' %>
           </td>
         </tr>
       <% end %>
@@ -34,4 +35,4 @@
   </tbody>
 </table>
 
-<%= link_to 'New message', new_message_path, class: 'btn btn-success mb-3' %>
+<%= link_to 'Nuevo Mensaje', new_message_path, class: 'btn btn-success mb-3' %>

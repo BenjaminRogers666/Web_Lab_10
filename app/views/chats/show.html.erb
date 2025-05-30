@@ -4,3 +4,21 @@
 <p><strong>Receptor:</strong> <%= @chat.receiver.email %> (<%= @chat.receiver.first_name %> <%= @chat.receiver.last_name %>)</p>
 <p><strong>Cantidad de mensajes:</strong> <%= @chat.messages.count %></p>
 <%= link_to 'Volver', chats_path, class: 'btn btn-secondary' %>
+
+<h1>Detalles del Chat</h1>
+
+<p><strong>Remitente:</strong> <%= @chat.sender.email %></p>
+<p><strong>Receptor:</strong> <%= @chat.receiver.email %></p>
+
+<h3>Mensajes</h3>
+<ul>
+  <% @chat.messages.each do |message| %>
+    <li>
+      <strong><%= message.user.email %>:</strong> <%= message.body %>
+      (<%= link_to 'Ver', message %>)
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to 'Editar', edit_chat_path(@chat) %> |
+<%= link_to 'Volver', chats_path %>

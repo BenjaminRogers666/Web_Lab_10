@@ -9,6 +9,8 @@ class MessagesController < ApplicationController
 
   def new
     @message = Message.new
+    @chats = Chat.all
+    @users = User.all
   end
 
   def create
@@ -17,7 +19,26 @@ class MessagesController < ApplicationController
     if @message.save
       redirect_to @message, notice: 'Message was successfully created.'
     else
-      render :new
+      @chats = Chat.all
+      @users = User.all
+      render :new, status: :unprocessable_entity
+    end
+  end
+
+  def edit
+    @message = Message.find(params[:id])
+    @chats = Chat.all
+    @users = User.all
+  end
+
+  def update
+    @message = Message.find(params[:id])
+    if @message.update(message_params)
+      redirect_to @message, notice: 'Mensaje actualizado correctamente.'
+    else
+      @chats = Chat.all
+      @users = User.all
+      render :edit, status: :unprocessable_entity
     end
   end
 

@@ -1,9 +1,10 @@
+<h1>Usuarios</h1>
 <table class="table">
   <thead class="thead-dark">
     <tr>
       <th>Email</th>
       <th>Nombre</th>
-      <th>Apellido</th>
+      <th>Total Mensajes</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -11,12 +12,15 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
-        <td><%= user.first_name %></td>
-        <td><%= user.last_name %></td>
-        <td><%= link_to 'Ver', user_path(user), class: 'btn btn-primary btn-sm' %></td>
+        <td><%= user.first_name %> <%= user.last_name %></td>
+        <td><%= user.messages.count %></td>
+        <td>
+          <%= link_to 'Ver', user_path(user), class: 'btn btn-primary btn-sm' %>
+          <%= link_to 'Editar', edit_user_path(user), class: 'btn btn-secondary btn-sm' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to 'Add new user', new_user_path, class: 'btn btn-success mb-3' %>
+<%= link_to 'Nuevo Usuario', new_user_path, class: 'btn btn-success mb-3' %>

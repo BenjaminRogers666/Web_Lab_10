@@ -1,3 +1,14 @@
+<% if @message.errors.any? %> <!-- Reemplaza @record por @user, @chat o @message según corresponda -->
+  <div style="color: red; margin-bottom: 20px;">
+    <h3>Errores:</h3>
+    <ul>
+      <% @message.errors.each do |error| %>
+        <li><%= error.full_message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>
+
 <h1>New Message</h1>
 
 <%= form_with model: @message do |f| %>

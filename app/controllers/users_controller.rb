@@ -14,13 +14,27 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
+  
     if @user.save
       redirect_to @user, notice: 'Usuario creado exitosamente.'
     else
-      render :new, status: :unprocessable_entity
+      render :new, status: :unprocessable_entity # Esta línea ya está correcta
     end
   end
 
+  def edit
+    @user = User.find(params[:id])
+  end
+
+  def update
+    @user = User.find(params[:id])
+    if @user.update(user_params)
+      redirect_to @user, notice: 'Usuario actualizado correctamente.'
+    else
+      render :edit, status: :unprocessable_entity
+    end
+  end 
+  
   private
 
   def user_params
