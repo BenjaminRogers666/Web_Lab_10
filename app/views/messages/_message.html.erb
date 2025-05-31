@@ -1,0 +1,9 @@
+<% if can? :edit, message %>
+  <%= link_to 'Editar', edit_message_path(message) %>
+<% end %>
+
+<% if can? :destroy, message %>
+  <%= link_to 'Eliminar', message, 
+              method: :delete, 
+              data: { confirm: '¿Estás seguro?' } %>
+<% end %>

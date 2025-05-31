@@ -1,37 +1,54 @@
-<h1>Chats</h1>
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Remitente</th>
-      <th>Receptor</th>
-      <th>Mensajes</th>
-      <th>Acciones</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% if @chats.any? %>
-      <% @chats.each do |chat| %>
+<h1 class="mb-4">Chats</h1>
+
+<% if can?(:create, Chat) %>
+  <%= link_to 'Nuevo Chat', new_chat_path, class: 'btn btn-success mb-4' %>
+<% end %>
+
+<div class="table-responsive">
+  <table class="table table-hover">
+    <thead class="table-dark">
+      <tr>
+        <th>ID</th>
+        <th>Remitente</th>
+        <th>Receptor</th>
+        <th>Mensajes</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% if @chats.any? %>
+        <% @chats.each do |chat| %>
+          <tr>
+            <td><%= chat.id %></td>
+            <td><%= chat.sender.email %></td>
+            <td><%= chat.receiver.email %></td>
+            <td><%= chat.messages.count %></td>
+            <td>
+              <div class="btn-group btn-group-sm" role="group">
+                <%= link_to 'Ver', chat_path(chat), class: 'btn btn-primary' %>
+                <% if can?(:edit, chat) %>
+                  <%= link_to 'Editar', edit_chat_path(chat), class: 'btn btn-secondary' %>
+                <% end %>
+                <% if can?(:destroy, chat) %>
+                  <%= link_to 'Eliminar', chat_path(chat),
+                              method: :delete,
+                              data: { confirm: '¿Estás seguro de eliminar este chat?' },
+                              class: 'btn btn-danger' %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      <% else %>
         <tr>
-          <td><%= chat.id %></td>
-          <td><%= chat.sender.email %></td>
-          <td><%= chat.receiver.email %></td>
-          <td><%= chat.messages.count %></td>
-          <td>
-            <%= link_to 'Ver', chat_path(chat), class: 'btn btn-primary btn-sm' %>
-            <%= link_to 'Editar', edit_chat_path(chat), class: 'btn btn-secondary btn-sm' %>
+          <td colspan="5" class="text-center text-muted py-4">
+            No hay chats disponibles
+            <% if can?(:create, Chat) %>
+              <%= link_to 'Iniciar nuevo chat', new_chat_path, class: 'btn btn-link' %>
+            <% end %>
           </td>
         </tr>
       <% end %>
-    <% else %>
-      <tr>
-        <td colspan="5" class="text-center text-muted py-4">
-          No hay chats disponibles
-          <%= link_to 'Iniciar nuevo chat', new_chat_path, class: 'btn btn-link' %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<%= link_to 'Nuevo Chat', new_chat_path, class: 'btn btn-success mb-3' %>
+    </tbody>
+  </table>
+</div>

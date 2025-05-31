@@ -1,10 +1,12 @@
-<h1>Usuarios</h1>
-<table class="table">
+<h1 class="mb-4">Usuarios</h1>
+
+<table class="table table-hover">
   <thead class="thead-dark">
     <tr>
       <th>Email</th>
       <th>Nombre</th>
       <th>Total Mensajes</th>
+      <th>Última conexión</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -12,15 +14,30 @@
     <% @users.each do |user| %>
       <tr>
         <td><%= user.email %></td>
-        <td><%= user.first_name %> <%= user.last_name %></td>
-        <td><%= user.messages.count %></td>
+        <td><%= user.full_name %></td>
+        <td><%= user.messages.size %></td>
+        <td><%= time_ago_in_words(user.updated_at) %></td>
         <td>
-          <%= link_to 'Ver', user_path(user), class: 'btn btn-primary btn-sm' %>
-          <%= link_to 'Editar', edit_user_path(user), class: 'btn btn-secondary btn-sm' %>
+          <div class="btn-group" role="group">
+            <%= link_to 'Ver', user_path(user), class: 'btn btn-primary btn-sm' %>
+            <% if can?(:edit, user) %>
+              <%= link_to 'Editar', edit_user_path(user), class: 'btn btn-secondary btn-sm' %>
+            <% end %>
+            <% if can?(:destroy, user) %>
+              <%= link_to 'Eliminar', user_path(user), 
+                          method: :delete, 
+                          data: { confirm: '¿Estás seguro?' },
+                          class: 'btn btn-danger btn-sm' %>
+            <% end %>
+          </div>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<%= link_to 'Nuevo Usuario', new_user_path, class: 'btn btn-success mb-3' %>
+<div class="mt-3">
+  <% if can?(:create, User) %>
+    <%= link_to 'Nuevo Usuario', new_user_path, class: 'btn btn-success' %>
+  <% end %>
+</div>

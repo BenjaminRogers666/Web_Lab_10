@@ -5,7 +5,7 @@
 
 <h3>Chats Participantes</h3>
 <ul>
-  <% @user.all_chats.each do |chat| %>
+  <% @user.chats.each do |chat| %>
     <li>
       Chat con <%= chat.sender == @user ? chat.receiver.email : chat.sender.email %>
       (<%= link_to 'Ver', chat %>)
@@ -25,3 +25,10 @@
 
 <%= link_to 'Editar', edit_user_path(@user) %> |
 <%= link_to 'Volver', users_path %>
+
+<h1><%= @user.full_name %></h1>
+<p><%= @user.email %></p>
+
+<% if can? :edit, @user %>
+  <%= link_to 'Editar perfil', edit_user_path(@user) %>
+<% end %>

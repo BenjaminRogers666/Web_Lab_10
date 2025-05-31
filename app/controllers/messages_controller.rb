@@ -1,43 +1,41 @@
 class MessagesController < ApplicationController
+  load_and_authorize_resource
+  
+  before_action :set_chats_for_current_user, only: [:new, :edit, :create, :update]
+  
   def index
-    @messages = Message.all.includes(:user, :chat)
+    # Mostrar solo mensajes de chats donde el usuario participa
+    @messages = Message.joins(:chat)
+                      .where(chats: { id: current_user.chats })
+                      .includes(:user, :chat)
   end
 
   def show
-    @message = Message.find(params[:id])
+    # load_and_authorize_resource ya maneja esto
   end
 
   def new
-    @message = Message.new
-    @chats = Chat.all
-    @users = User.all
+    # load_and_authorize_resource ya inicializa @message
   end
 
   def create
-    @message = Message.new(message_params)
+    @message.user = current_user # Asignar automáticamente el usuario actual
     
     if @message.save
-      redirect_to @message, notice: 'Message was successfully created.'
+      redirect_to chat_path(@message.chat), notice: 'Mensaje enviado correctamente.'
     else
-      @chats = Chat.all
-      @users = User.all
       render :new, status: :unprocessable_entity
     end
   end
 
   def edit
-    @message = Message.find(params[:id])
-    @chats = Chat.all
-    @users = User.all
+    # load_and_authorize_resource ya maneja esto
   end
 
   def update
-    @message = Message.find(params[:id])
     if @message.update(message_params)
-      redirect_to @message, notice: 'Mensaje actualizado correctamente.'
+      redirect_to chat_path(@message.chat), notice: 'Mensaje actualizado correctamente.'
     else
-      @chats = Chat.all
-      @users = User.all
       render :edit, status: :unprocessable_entity
     end
   end
@@ -45,6 +43,11 @@ class MessagesController < ApplicationController
   private
   
   def message_params
-    params.require(:message).permit(:chat_id, :user_id, :body)
+    # Eliminamos :user_id de los parámetros permitidos
+    params.require(:message).permit(:chat_id, :body)
+  end
+  
+  def set_chats_for_current_user
+    @chats = current_user.chats
   end
 end
