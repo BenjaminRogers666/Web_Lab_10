@@ -3,6 +3,10 @@ class UsersController < ApplicationController
   load_and_authorize_resource
 
   def index
+    unless current_user.admin?
+      redirect_to chats_path, alert: "Access restricted to administrators only."
+      return
+    end
     @users = User.accessible_by(current_ability)
                  .includes(:messages, :sent_chats, :received_chats)
                  .order(created_at: :desc)
@@ -48,9 +52,8 @@ class UsersController < ApplicationController
       :password_confirmation,
       :admin
     ).tap do |whitelisted|
-      unless current_user.try(:admin?)
-        whitelisted.delete(:admin) 
-      end
+      # Solo admins pueden modificar el campo admin
+      whitelisted.delete(:admin) unless current_user.try(:admin?)
     end
   end
 end

@@ -3,10 +3,11 @@ class ChatsController < ApplicationController
   load_and_authorize_resource
 
   def index
-    @chats = Chat.accessible_by(current_ability)
+    @chats = Chat.for_user(current_user)
                  .includes(:sender, :receiver, :messages)
                  .order(created_at: :desc)
   end
+
 
   def show
     @messages = @chat.messages.includes(:user).order(created_at: :asc)

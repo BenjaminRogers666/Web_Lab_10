@@ -1,12 +1,13 @@
 class Chat < ApplicationRecord
-  # Asociaciones
   belongs_to :sender, class_name: 'User'
   belongs_to :receiver, class_name: 'User'
   has_many :messages, dependent: :destroy
 
-  # Validaciones
-  validates :sender_id, :receiver_id, presence: true
-  validate :sender_and_receiver_different
+  scope :for_user, ->(user) { where("sender_id = ? OR receiver_id = ?", user.id, user.id) }
+
+  def other_participant(current_user)
+    sender == current_user ? receiver : sender
+  end
 
   # Método para verificar participación
   def involves?(user)

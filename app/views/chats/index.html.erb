@@ -1,38 +1,43 @@
-<h1 class="mb-4">Chats</h1>
+<h1 class="mb-4">My Inbox</h1>
 
 <% if can?(:create, Chat) %>
-  <%= link_to 'Nuevo Chat', new_chat_path, class: 'btn btn-success mb-4' %>
+  <%= link_to 'New Chat', new_chat_path, class: 'btn btn-success mb-4' %>
 <% end %>
 
 <div class="table-responsive">
   <table class="table table-hover">
     <thead class="table-dark">
       <tr>
-        <th>ID</th>
-        <th>Remitente</th>
-        <th>Receptor</th>
-        <th>Mensajes</th>
-        <th>Acciones</th>
+        <th>Conversation With</th>
+        <th>Last Activity</th>
+        <th>Messages</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
       <% if @chats.any? %>
         <% @chats.each do |chat| %>
           <tr>
-            <td><%= chat.id %></td>
-            <td><%= chat.sender.email %></td>
-            <td><%= chat.receiver.email %></td>
-            <td><%= chat.messages.count %></td>
+            <td>
+              <%= chat.other_participant(current_user).full_name %><br>
+              <small class="text-muted"><%= chat.other_participant(current_user).email %></small>
+            </td>
+            <td>
+              <%= chat.updated_at.to_formatted_s(:short) %>
+            </td>
+            <td>
+              <%= chat.messages.count %>
+            </td>
             <td>
               <div class="btn-group btn-group-sm" role="group">
-                <%= link_to 'Ver', chat_path(chat), class: 'btn btn-primary' %>
+                <%= link_to 'View', chat_path(chat), class: 'btn btn-primary' %>
                 <% if can?(:edit, chat) %>
-                  <%= link_to 'Editar', edit_chat_path(chat), class: 'btn btn-secondary' %>
+                  <%= link_to 'Edit', edit_chat_path(chat), class: 'btn btn-secondary' %>
                 <% end %>
                 <% if can?(:destroy, chat) %>
-                  <%= link_to 'Eliminar', chat_path(chat),
+                  <%= link_to 'Delete', chat_path(chat),
                               method: :delete,
-                              data: { confirm: '¿Estás seguro de eliminar este chat?' },
+                              data: { confirm: 'Are you sure?' },
                               class: 'btn btn-danger' %>
                 <% end %>
               </div>
@@ -41,10 +46,10 @@
         <% end %>
       <% else %>
         <tr>
-          <td colspan="5" class="text-center text-muted py-4">
-            No hay chats disponibles
+          <td colspan="4" class="text-center text-muted py-4">
+            No chats available
             <% if can?(:create, Chat) %>
-              <%= link_to 'Iniciar nuevo chat', new_chat_path, class: 'btn btn-link' %>
+              <%= link_to 'Start new chat', new_chat_path, class: 'btn btn-link' %>
             <% end %>
           </td>
         </tr>
